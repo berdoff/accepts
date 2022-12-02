@@ -13,7 +13,7 @@ from pymongo import MongoClient
 import certifi
 import datetime
 import testip
-from config import tok,token_seraph,mail,mail_pass,mongo
+from config import tok,token_seraph,mail,mail_pass,mongo,token_berdoff
 import email
 import asyncio
 
@@ -363,11 +363,11 @@ async def log(message: Message,nick: Optional[str] = None,server:Optional[str] =
         pass
     else:
         server="21"
-    
+    await message.answer(nick+" "+server)    
 
     if str(message.chat_id)=="5" or str(message.chat_id)=="8" or str(message.chat_id)=="3" or str(id_authora)=="178391887":
         if nick!=None:
-            await message.answer("Началась загрузка, примерное время загрузки 15 секунд")
+            await message.answer("Началась загрузка, примерное время загрузки 30 секунд")
             a = requests.get("http://berdoff.ru/loadlogsdawdawdwadwadwadwadwa2121",data={"token": token_berdoff, "nick": nick,"server":server}).text
             await message.answer(f"Загружен лог на 7 дней\nhttp://berdoff.ru/getlogs?token={a}")
         else:
