@@ -362,8 +362,7 @@ async def log(message: Message,nick: Optional[str] = None,server:Optional[str] =
     if (server!=None and str(message.chat_id)=="3") or (server!=None and str(id_authora)=="178391887"):
         pass
     else:
-        server="21"
-    await message.answer(nick+" "+server)    
+        server="21"   
 
     if str(message.chat_id)=="5" or str(message.chat_id)=="8" or str(message.chat_id)=="3" or str(id_authora)=="178391887":
         if nick!=None:
