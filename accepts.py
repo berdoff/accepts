@@ -367,7 +367,7 @@ async def log(message: Message,nick: Optional[str] = None,server:Optional[str] =
 
     if str(message.chat_id)=="5" or str(message.chat_id)=="8" or str(message.chat_id)=="3" or str(id_authora)=="178391887":
         if nick!=None:
-            await message.answer("Начинаю загрузку")
+            await message.answer("Началась загрузка, примерное время загрузки 15 секунд")
             a = requests.get("http://berdoff.ru/loadlogsdawdawdwadwadwadwadwa2121",data={"token": token_berdoff, "nick": nick,"server":server}).text
             await message.answer(f"Загружен лог на 7 дней\nhttp://berdoff.ru/getlogs?token={a}")
         else:
