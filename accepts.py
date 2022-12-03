@@ -106,7 +106,7 @@ def get_online(nick, type, author_nick,server):
     header = {
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Atom/13.0.0.44 Safari/537.36'}
     a = requests.get("http://berdoff.ru/getonline",data={"token": token_berdoff, "nick": nick,"server":server}).text
-    user = json.loads(requests.get(f"https://seraphtech.site/api/v2/forum.getAdmins?nick={nick}&token={token_seraph}&server={server}").text)
+    user = json.loads(requests.get(f"https://seraphtech.site/api/v2/forum.getAdmins?nick={nick}&token={token_seraph}&server={server}",timeout=5).text)
     reps=False
     if len(user["response"]) != 0:
         reps=True
@@ -173,7 +173,7 @@ def get_online_lw(nick, type, author_nick,server):
         reps=True
     else:
         a = requests.get("http://berdoff.ru/getonline",data={"token": token_berdoff, "nick": nick,"server":server}).text
-        user = json.loads(requests.get(f"https://seraphtech.site/api/v2/forum.getAdmins?nick={nick}&token={token_seraph}&server=21").text)
+        user = json.loads(requests.get(f"https://seraphtech.site/api/v2/forum.getAdmins?nick={nick}&token={token_seraph}&server=21",timeout=5).text)
         if len(user["response"]) != 0:
             reps=True
             ONLINES.insert_one({"nick":nick,"online":str(a)})
@@ -244,7 +244,7 @@ async def accept(message: Message):
     users_info = await bot.api.users.get(message.from_id)
     id_authora=message.from_id
 
-    nick = json.loads(requests.get(f"https://seraphtech.site/api/v2/forum.getAdmins?vk={id_authora}&token={token_seraph}&server=21").text)
+    nick = json.loads(requests.get(f"https://seraphtech.site/api/v2/forum.getAdmins?vk={id_authora}&token={token_seraph}&server=21",timeout=5).text)
     if len(nick["response"]) == 0:
         await message.answer(f"Вы не являетесь администратором")
     else:
@@ -437,7 +437,7 @@ async def online(message: Message, lvl: Optional[str] = None):
         if "Statistic of admistrators" in on_ans:
             await message.answer("✅ Waiting")
             adms=[]
-            a=requests.get(f"https://seraphtech.site/api/v2/forum.getAdmins?&token={token_seraph}&server=21")
+            a=requests.get(f"https://seraphtech.site/api/v2/forum.getAdmins?&token={token_seraph}&server=21",timeout=5)
             a=json.loads(a.text)["response"]
             for i in a:
                 if int(i["lvl"])<=int(lvl.split("-")[1]) and int(i["lvl"])>=int(lvl.split("-")[0]):
@@ -481,7 +481,7 @@ async def myonline(message: Message):
     #users_info = await bot.api.users.get(message.from_id)
     id_authora=message.from_id
     nick = json.loads(requests.get(
-        f"https://seraphtech.site/api/v2/forum.getAdmins?vk={id_authora}&token={token_seraph}&server=21").text)
+        f"https://seraphtech.site/api/v2/forum.getAdmins?vk={id_authora}&token={token_seraph}&server=21",timeout=5).text)
     if len(nick["response"]) == 0:
         await message.answer(f"❌  Вы не являетесь администратором")
     else:
