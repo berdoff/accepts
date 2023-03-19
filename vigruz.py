@@ -9,6 +9,9 @@ cluster=MongoClient(mongo,tlsCAFile=certifi.where())
 db=cluster["UsersData"]
 collection=db["logs"]
 ONLINES=db["ONLINES"]
+illegals=db["ILLEGALS"]
+for i in illegals.find({"dostup":"1"}):
+    illegals.update_one({"nick":i["nick"]},{"$set":{"otkazi":0}})
 sess=requests.session()
 xsrf=collection.find_one({"type":"token"})["session"]
 print(xsrf)
@@ -135,6 +138,7 @@ def getonl(nick):
             logs=sess.get(f"https://arizonarp.logsparser.info/?server_number=21&type%5B%5D=report_answer&sort=desc&min_period={year}-{month}-{day}+00%3A00%3A00&max_period={year_today}-{month_today}-{day_today}+00%3A00%3A00&player={nick}&limit=1000&page={k}")
             logs = BeautifulSoup(logs.text, "lxml")
             logs=logs.find("table",class_="table table-hover")
+        online["reports"]["check"]="True"
         return online
 
     else:
@@ -142,13 +146,13 @@ def getonl(nick):
 		
 user = json.loads(requests.get(f"https://seraphtech.site/api/v2/forum.getAdmins?&token=berdoff21EbashitPchel&server=21").text)["response"]
 for i in user:
-	print(i["nick"])
-	online=getonl(i["nick"])
-	try:
-		ONLINES.delete_one({"nick":i["nick"]})
-	except:
-		pass
-	ONLINES.insert_one({"nick":i["nick"],"online":str(online)})
+    print(i["nick"])
+    try:
+        online=getonl(i["nick"])
+        ONLINES.insert_one({"nick":i["nick"],"online":str(online),"server":"21"})
+    except:
+        ONLINES.insert_one({"nick":i["nick"],"online":"{'online': {}, 'reports': {'check': \"True\"}}","server":"21"})
+	
 
 
 
