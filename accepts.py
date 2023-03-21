@@ -1056,7 +1056,7 @@ async def game_forms_slet(message: Message,fforms: Optional[str] = None):
 @bot.on.message(text=["/onlines <lvl>"])
 async def online(message: Message, lvl: Optional[str] = None):
     id_authora=str(message.from_id)
-    if message.chat_id==5 and not id_authora=="37148810":
+    if message.chat_id==5:
         on_ans=""
         server="21"
         lvl=lvl.strip()
